@@ -24,8 +24,6 @@ Route::get('/', function(){
 
 // account management routes
 
-
-
 Route::post('/signup', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -33,7 +31,9 @@ Route::post('/login', [AuthController::class, 'login']);
 // middleware
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::get('/users', [UserController::class, 'index']);
+    Route::put('/edit_profile/{id}', [UserController::class, 'update']);
+
+    Route::delete('/delete_profile/{id}', [UserController::class, 'destroy']);
 
     // Employee management routes
 
