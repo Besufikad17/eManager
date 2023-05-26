@@ -34,11 +34,13 @@ Route::post('/add', [EmployeeController::class, 'store']);
 
 Route::get('/employees', [EmployeeController::class, 'index']);
 
-Route::get('/employee/:id');
+Route::get('/employee/{id}', [EmployeeController::class, 'show']);
 
-Route::put('/edit/:id');
+Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
 
-Route::delete('/remove/:id');
+Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+
+Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

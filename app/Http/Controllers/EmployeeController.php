@@ -37,7 +37,12 @@ class EmployeeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Employee::find($id);
+    }
+
+    public function showByEmail(string $email)
+    {
+        return Employee::where('email', $email)->get();
     }
 
     /**
@@ -45,7 +50,9 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $employee = Employee::find($id);
+        $employee->update($request->all());
+        return $employee;
     }
 
     /**
@@ -53,6 +60,11 @@ class EmployeeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return Employee::destroy($id);
     }
+
+    /**
+     * Searches for employee with given text
+     */
+    
 }
