@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
 
@@ -23,14 +24,19 @@ Route::get('/', function(){
 
 // account management routes
 
-Route::get('/users', [UserController::class, 'index']);
-
-Route::post('/signup', [UserController::class, 'store']);
 
 
-// Employee management routes
+Route::post('/signup', [AuthController::class, 'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+// middleware
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::get('/users', [UserController::class, 'index']);
+
+    // Employee management routes
+
     Route::post('/add', [EmployeeController::class, 'store']);
 
     Route::get('/employees', [EmployeeController::class, 'index']);
