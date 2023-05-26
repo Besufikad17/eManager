@@ -66,5 +66,17 @@ class EmployeeController extends Controller
     /**
      * Searches for employee with given text
      */
-    
+    public function search(Request $request, string $text)
+    {
+        $limit = $request->query('limit');
+        $offset = $request->query('offset');
+
+        return Employee::where('fname', 'like', '%'.$text.'%')
+                        ->orWhere('lname', 'like', '%'.$text.'%')
+                        ->orWhere('email', 'like', '%'.$text.'%')
+                        ->orWhere('phonenumber', 'like', '%'.$text.'%')
+                        ->offset(intval($offset))
+                        ->limit(intval($limit))
+                        ->get();
+    }
 }

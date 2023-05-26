@@ -42,6 +42,8 @@ Route::put('/edit/{id}', [EmployeeController::class, 'update']);
 
 Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
 
+Route::get('/search/{text}', [EmployeeController::class, 'search']);
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     echo "";
