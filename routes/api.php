@@ -30,20 +30,21 @@ Route::post('/signup', [UserController::class, 'store']);
 
 // Employee management routes
 
-Route::post('/add', [EmployeeController::class, 'store']);
+Route::group(['middleware' => ['auth:sanctum']], function() {
+    Route::post('/add', [EmployeeController::class, 'store']);
 
-Route::get('/employees', [EmployeeController::class, 'index']);
+    Route::get('/employees', [EmployeeController::class, 'index']);
 
-Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+    Route::get('/employee/{id}', [EmployeeController::class, 'show']);
 
-Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
+    Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
 
-Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+    Route::put('/edit/{id}', [EmployeeController::class, 'update']);
 
-Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
+    Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
 
-Route::get('/search/{text}', [EmployeeController::class, 'search']);
-
+    Route::get('/search/{text}', [EmployeeController::class, 'search']);    
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     echo "";

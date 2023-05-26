@@ -29,7 +29,15 @@ class EmployeeController extends Controller
             'salary' => 'required'
         ]);
 
-        return Employee::create($request->all());
+        $data = [
+            'fname' => $request->all()['fname'],
+            'lname' => $request->all()['lname'],
+            'email' => $request->all()['email'],
+            'phonenumber' => $request->all()['phonenumber'],
+            'password' => password_hash($request->all()['fname'].$request->all()['lname'], PASSWORD_DEFAULT),
+            'salary' => $request->all()['salary']
+        ];
+        return Employee::create($data);
     }
 
     /**
@@ -80,3 +88,4 @@ class EmployeeController extends Controller
                         ->get();
     }
 }
+
