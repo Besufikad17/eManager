@@ -13,7 +13,7 @@ Simple REST API for employee management system made by using laravel.
 2. Installing packages
    
    ```bash
-    cd eManager && php composer.phar update
+    cd eManager && php composer install
     ```
 3. Connecting database
    
