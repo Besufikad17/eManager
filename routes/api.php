@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
 
-    Route::get('/search/{text}', [EmployeeController::class, 'search']);    
+    Route::get('/search/{text}', [EmployeeController::class, 'search']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
