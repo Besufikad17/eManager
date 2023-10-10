@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class ImageController extends Controller {
     public function getImageByUserId(string $id) {
-        $localUrl = Image::where('user_id', $id)->get()[0]['image_path'];
-        $fileName = explode("/", $localUrl)[1];
-        return "http://localhost:8000/storage/".$fileName;
+        $images = Image::where('user_id', $id)->get();
+
+        $response = [];
+        foreach($images as $i => $value) {
+            $imgUrl = $images[$i]['image_path'];
+            $fileName = explode("/", $imgUrl)[1];
+            array_push($response, "http://localhost:8000/storage/".$fileName);
+        }
+       
+        return $response;
     }
 
     public function store(Request $request) {

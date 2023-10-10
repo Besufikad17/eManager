@@ -42,6 +42,8 @@ Simple REST API for employee management system made by using laravel.
 | Register           | POST         | Body : { fname, lname, email,   phonenumber, password }                | { user, token }     | /signup                     |
 | Login              | POST         | Body : { email, password }                                             | { user, token }     | /login                      |
 | EditProfile        | PUT          | Param: { id }  Body : { fname, lname, email,   phonenumber, password } | { user }            | /edit_profile/{id}          |
+| UploadProfile      | POST         | Body : { title, image, user_id }                                       | { image }           | /images/upload              |
+| GetProfileByUserId | GET          | Param: { id }                                                          | [ img_url ]         | /images/{id}                |
 | DeleteProfile      | DELETE       | Param: { id }                                                          | True(1) or False(0) | /delete_profile/{id}        |
 | AddEmployee        | POST         | Body : { fname, lname, email,   phonenumber, password, salary }        | { employee }        | /add                        |
 | GetEmployees       | GET          |                                                                        | { employee[] }      | /employees                  |
