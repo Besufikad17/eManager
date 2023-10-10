@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ImageController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,8 @@ Route::post('/signup', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/images/upload', [ImageController::class, 'store']);
+
 // middleware
 
 Route::group(['middleware' => ['auth:sanctum']], function() {
@@ -35,6 +38,7 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
 
     Route::delete('/delete_profile/{id}', [UserController::class, 'destroy']);
 
+    Route::get('/images/{id}', [ImageController::class, 'getImageByUserId']);
     // Employee management routes
 
     Route::post('/add', [EmployeeController::class, 'store']);
