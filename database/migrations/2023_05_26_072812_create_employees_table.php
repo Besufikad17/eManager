@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('lname');
             $table->string('email');
             $table->string('phonenumber');
-            $table->string('password');
             $table->decimal('salary');
             $table->timestamps();
         });

@@ -12,7 +12,6 @@ class Employee extends Model {
         'fname',
         'lname',
         'email',
-        'password',
         'phonenumber',
         'salary'
     ];

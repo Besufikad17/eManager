@@ -4,29 +4,22 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
+use App\Http\Resources\V1\EmployeeResource;
+use App\Http\Resources\V1\EmployeeCollection;
 use Illuminate\Http\Request;
 
-class EmployeeController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return Employee::all();
+class EmployeeController extends Controller {
+
+    public function index() {
+        return new EmployeeCollection(Employee::paginate());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $request->validate([
             'fname' => 'required',
             'lname' => 'required',
             'email' => 'required',
             'phonenumber' => 'required',
-            'password' => 'required',
             'salary' => 'required'
         ]);
 
@@ -35,48 +28,32 @@ class EmployeeController extends Controller
             'lname' => $request->all()['lname'],
             'email' => $request->all()['email'],
             'phonenumber' => $request->all()['phonenumber'],
-            'password' => password_hash($request->all()['fname'].$request->all()['lname'], PASSWORD_DEFAULT),
             'salary' => $request->all()['salary']
         ];
-        return Employee::create($data);
+        return new EmployeeResource(Employee::create($data));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        return Employee::find($id);
+    public function show(string $id) {
+        return new EmployeeResource(Employee::find($id));
     }
 
-    public function showByEmail(string $email)
-    {
-        return Employee::where('email', $email)->get();
+    public function showByEmail(string $email) {
+        return new EmployeeResource(Employee::where('email', $email)->get());
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
+    public function update(Request $request, string $id) {
         $employee = Employee::find($id);
         $employee->update($request->all());
-        return $employee;
+        return new EmployeeResource($employee);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
+
+    public function destroy(string $id) {
         return Employee::destroy($id);
     }
 
-    /**
-     * Searches for employee with given text
-     */
-    public function search(Request $request, string $text)
-    {
+
+    public function search(Request $request, string $text) {
         $limit = $request->query('limit');
         $offset = $request->query('offset');
 
