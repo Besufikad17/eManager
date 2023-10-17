@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Image;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,12 @@ class ImageController extends Controller {
             $fileName = explode("/", $imgUrl)[1];
             array_push($response, "http://localhost:8000/storage/".$fileName);
         }
-       
+
         return $response;
     }
 
     public function store(Request $request) {
-        
+
         $request->validate([
             'title' => 'required',
             'user_id' => 'required',

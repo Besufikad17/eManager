@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ImageController;
+use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\ImageController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,37 +23,44 @@ Route::get('/', function(){
     return 'welcome to eManager';
 });
 
-// account management routes
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], function(){
 
-Route::post('/signup', [AuthController::class, 'register']);
+    // account management routes
 
-Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/signup', [AuthController::class, 'register']);
 
-Route::post('/images/upload', [ImageController::class, 'store']);
+    Route::post('/login', [AuthController::class, 'login']);
 
-// middleware
+    Route::post('/images/upload', [ImageController::class, 'store']);
 
-Route::group(['middleware' => ['auth:sanctum']], function() {
-    Route::put('/edit_profile/{id}', [UserController::class, 'update']);
+    // middleware
 
-    Route::delete('/delete_profile/{id}', [UserController::class, 'destroy']);
+    Route::group(['middleware' => ['auth:sanctum']], function() {
 
-    Route::get('/images/{id}', [ImageController::class, 'getImageByUserId']);
-    // Employee management routes
+        Route::post('/request_recover', [AuthController::class, 'recover']);
 
-    Route::post('/add', [EmployeeController::class, 'store']);
+        Route::put('/edit_profile/{id}', [UserController::class, 'update']);
 
-    Route::get('/employees', [EmployeeController::class, 'index']);
+        Route::delete('/delete_profile/{id}', [UserController::class, 'destroy']);
 
-    Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+        Route::get('/images/{id}', [ImageController::class, 'getImageByUserId']);
 
-    Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
+        // Employee management routes
 
-    Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+        Route::post('/add', [EmployeeController::class, 'store']);
 
-    Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
+        Route::get('/employees', [EmployeeController::class, 'index']);
 
-    Route::get('/search/{text}', [EmployeeController::class, 'search']);
+        Route::get('/employee/{id}', [EmployeeController::class, 'show']);
+
+        Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
+
+        Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+
+        Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
+
+        Route::get('/search/{text}', [EmployeeController::class, 'search']);
+    });
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
