@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Http\Resources\V1\EmployeeResource;
 use App\Http\Resources\V1\EmployeeCollection;
+use App\Filters\V1\EmployeeFilter;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller {
 
-    public function index() {
-        return new EmployeeCollection(Employee::paginate());
+    public function index(Request $request) {
+        $filter = new EmployeeFilter();
+        $queryItems = $filter->transform($request);
+        if(count($queryItems) == 0) {
+            return new EmployeeCollection(Employee::paginate());
+        } else {
+            return new EmployeeCollection(Employee::where($queryItems)->paginate());
+        }
     }
 
     public function store(Request $request) {
