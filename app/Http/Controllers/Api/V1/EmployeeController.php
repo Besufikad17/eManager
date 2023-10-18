@@ -17,7 +17,8 @@ class EmployeeController extends Controller {
         if(count($queryItems) == 0) {
             return new EmployeeCollection(Employee::paginate());
         } else {
-            return new EmployeeCollection(Employee::where($queryItems)->paginate());
+            $employees = Employee::where($queryItems)->paginate();
+            return new EmployeeCollection($employees->appends($request->query()));
         }
     }
 
