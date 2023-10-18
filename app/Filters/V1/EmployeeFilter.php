@@ -11,7 +11,7 @@ class EmployeeFilter extends AppFilter {
         'lname' => ['like'],
         'email' => ['like'],
         'phonenumber' => ['like'],
-        'salary' => ['gt', 'lt', 'eq']
+        'salary' => ['gt', 'lt', 'eq', 'gte', 'lte', 'nt']
     ];
 
     protected $columnMap = [
@@ -22,7 +22,10 @@ class EmployeeFilter extends AppFilter {
         'like' => 'like',
         'eq' => '=',
         'lt' => '<',
-        'gt' => '>'
+        'gt' => '>',
+        'gte' => '>=',
+        'lte' => '=<',
+        'nt' => '!='
     ];
 
     public function transform(Request $request) {
