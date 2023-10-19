@@ -7,7 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreEmployeeRequest extends FormRequest {
 
     public function authorize(): bool {
-        return true;
+        $user = $this->user();
+        return $user != null && $user->tokenCan('create');
     }
 
     public function rules(): array {
