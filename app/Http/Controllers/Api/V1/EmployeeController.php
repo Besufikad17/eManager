@@ -9,6 +9,7 @@ use App\Http\Resources\V1\EmployeeResource;
 use App\Http\Resources\V1\EmployeeCollection;
 use App\Filters\V1\EmployeeFilter;
 use App\Http\Requests\V1\StoreEmployeeRequest;
+use App\Http\Requests\V1\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller {
 
@@ -35,7 +36,7 @@ class EmployeeController extends Controller {
         return new EmployeeResource(Employee::where('email', $email)->get());
     }
 
-    public function update(Request $request, string $id) {
+    public function update(UpdateEmployeeRequest $request, string $id) {
         $employee = Employee::find($id);
         $employee->update($request->all());
         return new EmployeeResource($employee);

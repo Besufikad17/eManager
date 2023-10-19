@@ -30,6 +30,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 
         Route::put('/edit_profile/{id}', [UserController::class, 'update']);
 
+        Route::patch('/edit_profile/{id}', [UserController::class, 'update']);
+
         Route::delete('/delete_profile/{id}', [UserController::class, 'destroy']);
 
         Route::get('/images/{id}', [ImageController::class, 'getImageByUserId']);
@@ -45,6 +47,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
         Route::get('/employee/email/{email}', [EmployeeController::class, 'showByEmail']);
 
         Route::put('/edit/{id}', [EmployeeController::class, 'update']);
+
+        Route::patch('/edit/{id}', [EmployeeController::class, 'update']);
 
         Route::delete('/remove/{id}', [EmployeeController::class, 'destroy']);
     });

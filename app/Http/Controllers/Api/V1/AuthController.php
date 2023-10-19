@@ -2,53 +2,42 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\User;
-use App\Models\VerificationCode;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use App\Models\VerificationCode;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
+use App\Http\Requests\V1\SignUpRequest;
+use App\Http\Requests\V1\LoginRequest;
 
-class AuthController extends Controller
-{
-    public function register(Request $request) {
-        $fields = $request->validate([
-            'fname' => 'required|string',
-            'lname' => 'required|string',
-            'email' => 'required|email',
-            'phonenumber' => 'required',
-            'password' => 'required',
-        ]);
-
+class AuthController extends Controller {
+    public function register(SignUpRequest $request) {
         $user = User::create([
-            'fname' => $fields['fname'],
-            'lname' => $fields['lname'],
-            'email' => $fields['email'],
-            'phonenumber' => $fields['phonenumber'],
-            'password' => bcrypt($fields['password'])
+            'fname' => $request['fname'],
+            'lname' => $request['lname'],
+            'email' => $request['email'],
+            'phonenumber' => $request['phonenumber'],
+            'password' => bcrypt($request['password'])
         ]);
 
         $token = $user->createToken("mytoken")->plainTextToken;
 
         $response = [
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token
         ];
 
         return response($response, 201);
     }
 
-    public function login(Request $request) {
-        $fields = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    public function login(LoginRequest $request) {
+        $user = User::with('images')->where('email', $request['email'])->first();
 
-        $user = User::with('images')->where('email', $fields['email'])->first();
-
-        if(!$user || !Hash::check($fields['password'], $user->password)) {
+        if(!$user || !Hash::check($request['password'], $user->password)) {
             return response([
                 'message' => 'Invalid credentials!!'
             ], 401);
@@ -57,7 +46,7 @@ class AuthController extends Controller
         $token = $user->createToken("mytoken")->plainTextToken;
 
         $response = [
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token
         ];
 
@@ -71,7 +60,6 @@ class AuthController extends Controller
 
         $user = User::where('email', $request['email'])->first();
 
-        echo $user;
         if($user) {
             $code = VerificationCode::create([
                 'user_id' => $user["id"],
@@ -88,7 +76,6 @@ class AuthController extends Controller
             ], 401);
         }
     }
-
 
 
     public function logout() {

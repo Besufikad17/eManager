@@ -2,27 +2,20 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\V1\EditProfileRequest;
+use App\Http\Resources\V1\UserResource;
 
-class UserController extends Controller
-{
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
+class UserController extends Controller {
+    public function update(EditProfileRequest $request, string $id) {
         $user = User::find($id);
         $user->update($request->all());
-        return $user;
+        return new UserResource($user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
+    public function destroy(string $id) {
         return User::destroy($id);
     }
 }
