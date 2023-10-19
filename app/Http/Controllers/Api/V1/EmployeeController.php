@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Http\Resources\V1\EmployeeResource;
 use App\Http\Resources\V1\EmployeeCollection;
 use App\Filters\V1\EmployeeFilter;
-use Illuminate\Http\Request;
+use App\Http\Requests\V1\StoreEmployeeRequest;
 
 class EmployeeController extends Controller {
 
@@ -22,23 +23,8 @@ class EmployeeController extends Controller {
         }
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'fname' => 'required',
-            'lname' => 'required',
-            'email' => 'required',
-            'phonenumber' => 'required',
-            'salary' => 'required'
-        ]);
-
-        $data = [
-            'fname' => $request->all()['fname'],
-            'lname' => $request->all()['lname'],
-            'email' => $request->all()['email'],
-            'phonenumber' => $request->all()['phonenumber'],
-            'salary' => $request->all()['salary']
-        ];
-        return new EmployeeResource(Employee::create($data));
+    public function store(StoreEmployeeRequest $request) {
+        return new EmployeeResource(Employee::create($request->all()));
     }
 
     public function show(string $id) {
@@ -58,20 +44,6 @@ class EmployeeController extends Controller {
 
     public function destroy(string $id) {
         return Employee::destroy($id);
-    }
-
-
-    public function search(Request $request, string $text) {
-        $limit = $request->query('limit');
-        $offset = $request->query('offset');
-
-        return Employee::where('fname', 'like', '%'.$text.'%')
-                        ->orWhere('lname', 'like', '%'.$text.'%')
-                        ->orWhere('email', 'like', '%'.$text.'%')
-                        ->orWhere('phonenumber', 'like', '%'.$text.'%')
-                        ->offset(intval($offset))
-                        ->limit(intval($limit))
-                        ->get();
     }
 }
 
