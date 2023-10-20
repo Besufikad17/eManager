@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('verification_code', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->string('user_email');
             $table->string('code');
             $table->boolean('expired');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

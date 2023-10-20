@@ -29,9 +29,6 @@ class ImageController extends Controller {
         ]);
 
         $imagePath = $request->file('image')->store('public');
-
-        // $imagePath = Storage::put('public', $request->get('image'));
-
         $image = new Image([
             'title' => $request->get('title'),
             'image_path' => $imagePath,

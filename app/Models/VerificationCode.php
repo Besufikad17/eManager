@@ -10,15 +10,11 @@ use App\Models\User;
 class VerificationCode extends Model {
     use HasFactory;
 
-    public $table = 'verification_code';
+    public $table = "verification_code";
 
     protected $fillable = [
-        'user_id' => 'required',
-        'code' => 'required',
-        'expired' => 'required'
+        'user_email',
+        'code',
+        'expired'
     ];
-
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class);
-    }
 }

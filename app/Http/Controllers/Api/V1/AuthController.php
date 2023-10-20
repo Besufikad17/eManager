@@ -10,9 +10,12 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\VerificationCode;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\MailController;
 use App\Http\Resources\V1\UserResource;
 use App\Http\Requests\V1\SignUpRequest;
 use App\Http\Requests\V1\LoginRequest;
+use App\Http\Requests\V1\PasswordRecoveryRequest;
+use Mail;
 
 class AuthController extends Controller {
     public function register(SignUpRequest $request) {
@@ -53,21 +56,18 @@ class AuthController extends Controller {
         return response($response, 201);
     }
 
-    public function recover(Request $request) {
-        $request->validate([
-            'email' => 'required|email'
-        ]);
-
+    public function recover(PasswordRecoveryRequest $request) {
         $user = User::where('email', $request['email'])->first();
 
-        if($user) {
+        if(isset($user)){
             $code = VerificationCode::create([
-                'user_id' => $user["id"],
+                'user_email' => $request['email'],
                 'code' => Str::random(8),
                 'expired' => false
             ]);
 
-            // TODO: send email
+            $mailController = new MailController();
+            $mailController->index($code['code'], $code['user_email']);
 
             return $code;
         } else {
@@ -77,12 +77,4 @@ class AuthController extends Controller {
         }
     }
 
-
-    public function logout() {
-        // FIXME: tokens() alternative
-        // auth()->user()->tokens()->delete();
-        return [
-            'message' => 'Logged out'
-        ];
-    }
 }

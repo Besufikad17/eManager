@@ -35,8 +35,4 @@ class User extends Authenticatable {
     public function images() : HasMany {
         return $this->hasMany(Image::class);
     }
-
-    public function verification_code() : HasMany {
-        return $this->hasMany(VerificationCode::class);
-    }
 }
