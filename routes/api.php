@@ -26,6 +26,7 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 
     Route::put('/verify', [UserController::class, 'verify']);
 
+    Route::put('/change_password/{id}', [UserController::class, 'change_password']);
     // middleware
 
     Route::group(['middleware' => ['auth:sanctum']], function() {

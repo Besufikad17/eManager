@@ -7,8 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class ChangePasswordRequest extends FormRequest {
 
     public function authorize(): bool {
-        $user = $this->user();
-        return $user != null && $user->tokenCan('update');
+        return true;
     }
 
     public function rules(): array {

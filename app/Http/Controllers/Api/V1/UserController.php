@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\VerificationCode;
+use App\Http\Requests\V1\ChangePasswordRequest;
 use App\Http\Requests\V1\EditProfileRequest;
 use App\Http\Requests\V1\VerificationRequest;
-use App\Http\Requests\V1\ChangePasswordRequest;
 use App\Http\Resources\V1\UserResource;
-use Illuminate\Http\Request;
-use Carbon;
+use App\Models\User;
+use App\Models\VerificationCode;
 
 class UserController extends Controller {
     public function update(EditProfileRequest $request, string $id) {
@@ -55,8 +53,14 @@ class UserController extends Controller {
         }
     }
 
-    public function change_password(ChangePasswordRequest $request) {
+    public function change_password(ChangePasswordRequest $request, string $id) {
+        $user = User::find($id);
+        $user->password = bcrypt($request['new_password']);
+        $user->save();
 
+        return response([
+            'message' => 'Done!!'
+        ], 201);
     }
 
     public function destroy(string $id) {
