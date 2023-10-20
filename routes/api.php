@@ -22,11 +22,13 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 
     Route::post('/images/upload', [ImageController::class, 'store']);
 
+    Route::post('/request_recover', [AuthController::class, 'recover']);
+
+    Route::put('/verify', [UserController::class, 'verify']);
+
     // middleware
 
     Route::group(['middleware' => ['auth:sanctum']], function() {
-
-        Route::post('/request_recover', [AuthController::class, 'recover']);
 
         Route::put('/edit_profile/{id}', [UserController::class, 'update']);
 

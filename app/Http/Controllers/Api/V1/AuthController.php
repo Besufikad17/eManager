@@ -63,7 +63,8 @@ class AuthController extends Controller {
             $code = VerificationCode::create([
                 'user_email' => $request['email'],
                 'code' => Str::random(8),
-                'expired' => false
+                'expired' => false,
+                'verified' => false
             ]);
 
             $mailController = new MailController();

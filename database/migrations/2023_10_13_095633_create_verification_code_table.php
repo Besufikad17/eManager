@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('user_email');
             $table->string('code');
             $table->boolean('expired');
+            $table->boolean('verified');
             $table->timestamps();
         });
     }

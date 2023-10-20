@@ -15,6 +15,7 @@ class VerificationCode extends Model {
     protected $fillable = [
         'user_email',
         'code',
-        'expired'
+        'expired',
+        'verified'
     ];
 }

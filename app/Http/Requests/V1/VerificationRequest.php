@@ -4,8 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PasswordRecoveryRequest extends FormRequest {
-
+class VerificationRequest extends FormRequest {
     public function authorize(): bool {
        return true;
     }
@@ -13,6 +12,7 @@ class PasswordRecoveryRequest extends FormRequest {
     public function rules(): array {
         return [
             'email' => ['required', 'string'],
+            'code' => ['required', 'string']
         ];
     }
 }
