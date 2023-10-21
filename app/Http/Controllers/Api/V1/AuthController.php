@@ -8,6 +8,7 @@ use App\Http\Requests\V1\LoginRequest;
 use App\Http\Requests\V1\PasswordRecoveryRequest;
 use App\Http\Requests\V1\SignUpRequest;
 use App\Http\Resources\V1\UserResource;
+use App\Http\Resources\V1\VerificationCodeResource;
 use App\Models\User;
 use App\Models\VerificationCode;
 use Illuminate\Support\Facades\Hash;
@@ -15,22 +16,30 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller {
     public function register(SignUpRequest $request) {
-        $user = User::create([
-            'fname' => $request['fname'],
-            'lname' => $request['lname'],
-            'email' => $request['email'],
-            'phonenumber' => $request['phonenumber'],
-            'password' => bcrypt($request['password'])
-        ]);
+        $user = User::where('email', $request['email'])->first();
 
-        $token = $user->createToken("mytoken", ["create", "update", "delete"])->plainTextToken;
+        if(!isset($user)) {
+            $newUser = User::create([
+                'fname' => $request['fname'],
+                'lname' => $request['lname'],
+                'email' => $request['email'],
+                'phonenumber' => $request['phonenumber'],
+                'password' => bcrypt($request['password'])
+            ]);
 
-        $response = [
-            'user' => new UserResource($user),
-            'token' => $token
-        ];
+            $token = $newUser->createToken("mytoken", ["create", "update", "delete"])->plainTextToken;
 
-        return response($response, 201);
+            $response = [
+                'user' => new UserResource($newUser),
+                'token' => $token
+            ];
+
+            return response($response, 201);
+        } else {
+            return response([
+                'message' => 'Email address already taken!!'
+            ], 401);
+        }
     }
 
     public function login(LoginRequest $request) {
@@ -66,7 +75,7 @@ class AuthController extends Controller {
             $mailController = new MailController();
             $mailController->index($code['code'], $code['user_email']);
 
-            return $code;
+            return new VerificationCodeResource($code);
         } else {
             return response([
                 'message' => 'User not found!!'
