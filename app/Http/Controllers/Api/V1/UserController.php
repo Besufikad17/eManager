@@ -18,7 +18,9 @@ class UserController extends Controller {
     }
 
     public function verify(VerificationRequest $request) {
-        $code = VerificationCode::where('user_email', $request['email'])->first();
+        $code = VerificationCode::where('user_email', $request['email'])
+                ->latest()
+                ->first();
 
         if(isset($code)) {
             if($code['code'] == $request['code']) {
@@ -53,8 +55,11 @@ class UserController extends Controller {
         }
     }
 
-    public function change_password(ChangePasswordRequest $request, string $id) {
-        $user = User::find($id);
+    public function change_password(ChangePasswordRequest $request) {
+        $user = !isset($request['id']) ?
+                User::find($request['id']) :
+                User::where('email', $request['email'])->first();
+
         $user->password = bcrypt($request['new_password']);
         $user->save();
 

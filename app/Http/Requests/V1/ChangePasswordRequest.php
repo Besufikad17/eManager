@@ -12,7 +12,15 @@ class ChangePasswordRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'new_password' => ['required', 'string']
+            'id' => ['sometimes'],
+            'email' => ['sometimes', 'string'],
+            'newPassword' => ['required', 'string']
         ];
+    }
+
+    protected function prepareForValidation() {
+        $this->merge([
+            'new_password' => $this->newPassword
+        ]);
     }
 }
