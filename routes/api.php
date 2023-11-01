@@ -29,6 +29,8 @@ Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\V1'], f
 
     Route::group(['middleware' => ['auth:sanctum']], function() {
 
+        Route::get('/user/{id}', [UserController::class, 'show']);
+
         Route::post('/images/upload', [ImageController::class, 'store']);
 
         Route::put('/edit_profile/{id}', [UserController::class, 'update']);

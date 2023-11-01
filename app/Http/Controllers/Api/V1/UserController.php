@@ -11,6 +11,10 @@ use App\Models\User;
 use App\Models\VerificationCode;
 
 class UserController extends Controller {
+    public function show(string $id) {
+        return new UserResource(User::find($id));
+    }
+
     public function update(EditProfileRequest $request, string $id) {
         $user = User::find($id);
         $user->update($request->all());
