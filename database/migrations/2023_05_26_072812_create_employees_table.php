@@ -15,9 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('fname');
             $table->string('lname');
-            $table->string('email');
-            $table->string('phonenumber');
+            $table->string('profile_picture_url');
+            $table->string('email')->unique();
+            $table->string('phonenumber')->unique();
+            $table->enum('dept', ['Accounting', 'IT', 'Sales', 'HR']);
+            $table->date('date_of_birth');
             $table->decimal('salary');
+            $table->enum('gender', ['Male', 'Female']);
             $table->timestamps();
         });
     }

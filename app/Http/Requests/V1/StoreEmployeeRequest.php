@@ -15,15 +15,21 @@ class StoreEmployeeRequest extends FormRequest {
         return [
             'fname' => ['required'],
             'lname' => ['required'],
+            'profilePictureUrl' => ['required'],
             'email' => ['required'],
             'phoneNumber' => ['required'],
-            'salary' => ['required']
+            'dept' => ['required'],
+            'dateOfBirth' => ['required']
+            'salary' => ['required'],
+            'gender' => ['required']
         ];
     }
 
     protected function prepareForValidation() {
         $this->merge([
-            'phonenumber' => $this->phoneNumber
+            'profile_picture_url' => $this->profilePictureUrl,
+            'phonenumber' => $this->phoneNumber,
+            'date_of_birth' => $this->dateOfBirth
         ]);
     }
 }

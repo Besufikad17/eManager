@@ -20,7 +20,8 @@ class EmployeeController extends Controller {
             return new EmployeeCollection(Employee::paginate());
         } else {
             $employees = Employee::where($queryItems)->paginate();
-            return new EmployeeCollection($employees->appends($request->query()));
+            return $employees->appends($request->query());
+            //return new EmployeeCollection($employees->appends($request->query()));
         }
     }
 

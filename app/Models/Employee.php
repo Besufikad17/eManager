@@ -11,8 +11,12 @@ class Employee extends Model {
     protected $fillable = [
         'fname',
         'lname',
+        'profile_picture_url',
         'email',
         'phonenumber',
-        'salary'
+        'dept',
+        'date_of_birth',
+        'salary',
+        'gender'
     ];
 }
